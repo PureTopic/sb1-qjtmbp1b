@@ -11,6 +11,8 @@ export interface CompoundData {
   category: string;
   recipe: string[];
   formula?: string;
+  color: string;
+  flowerEmoji?: string;
 }
 
 export const ELEMENTS: Record<string, ElementData> = {
@@ -63,6 +65,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'basic_compounds',
     recipe: ['fire', 'water'],
     formula: 'Fire + Water',
+    color: '#E5E7EB',
+    flowerEmoji: '🌸',
   },
   mud: {
     emoji: '🟤',
@@ -70,6 +74,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'basic_compounds',
     recipe: ['earth', 'water'],
     formula: 'Earth + Water',
+    color: '#8B4513',
+    flowerEmoji: '🌻',
   },
   dust: {
     emoji: '🌪️',
@@ -77,6 +83,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'basic_compounds',
     recipe: ['earth', 'air'],
     formula: 'Earth + Air',
+    color: '#D2B48C',
+    flowerEmoji: '🌼',
   },
   lava: {
     emoji: '🌋',
@@ -84,6 +92,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'basic_compounds',
     recipe: ['fire', 'earth'],
     formula: 'Fire + Earth',
+    color: '#FF4500',
+    flowerEmoji: '🌺',
   },
   lightning: {
     emoji: '⚡',
@@ -91,6 +101,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'advanced_compounds',
     recipe: ['fire', 'air'],
     formula: 'Fire + Air',
+    color: '#FFD700',
+    flowerEmoji: '⚡',
   },
   ice: {
     emoji: '🧊',
@@ -98,6 +110,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'basic_compounds',
     recipe: ['water', 'air'],
     formula: 'Water + Air',
+    color: '#87CEEB',
+    flowerEmoji: '❄️',
   },
   plant: {
     emoji: '🌿',
@@ -105,6 +119,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'life_compounds',
     recipe: ['earth', 'water', 'air'],
     formula: 'Earth + Water + Air',
+    color: '#228B22',
+    flowerEmoji: '🌿',
   },
   metal: {
     emoji: '⚙️',
@@ -112,6 +128,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'advanced_compounds',
     recipe: ['fire', 'earth', 'air'],
     formula: 'Fire + Earth + Air',
+    color: '#C0C0C0',
+    flowerEmoji: '⚙️',
   },
   glass: {
     emoji: '🪟',
@@ -119,6 +137,8 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'advanced_compounds',
     recipe: ['fire', 'earth'],
     formula: 'Fire + Earth',
+    color: '#F0F8FF',
+    flowerEmoji: '💎',
   },
   cloud: {
     emoji: '☁️',
@@ -126,5 +146,7 @@ export const COMPOUNDS: Record<string, CompoundData> = {
     category: 'weather_compounds',
     recipe: ['air', 'water'],
     formula: 'Air + Water',
+    color: '#F5F5F5',
+    flowerEmoji: '☁️',
   },
 };

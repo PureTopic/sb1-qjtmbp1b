@@ -6,10 +6,15 @@ import { formatNumber } from '../utils/formatters';
 import { ELEMENTS, COMPOUNDS } from '../data/elements';
 import { Beaker, FlaskConical, Zap, Droplets, Wind, Hammer, Sparkles } from 'lucide-react';
 
+type AnimationStep = 'idle' | 'pre-transmute' | 'filling' | 'blooming';
+
 export const Laboratory: React.FC = () => {
   const { gameState, actions } = useGame();
   const [selectedElements, setSelectedElements] = useState<string[]>([]);
   const [animating, setAnimating] = useState<boolean>(false);
+  const [animationStep, setAnimationStep] = useState<AnimationStep>('idle');
+  const [fillProgress, setFillProgress] = useState<number>(0);
+  const [transmutationResultCompound, setTransmutationResultCompound] = useState<string | null>(null);
   
   // Generate elements at regular intervals
   useEffect(() => {
@@ -40,23 +45,86 @@ export const Laboratory: React.FC = () => {
       return;
     }
 
-    setAnimating(true);
-    
-    setTimeout(() => {
-      const result = actions.transmute(selectedElements);
-      
-      if (result.success) {
-        toast.success(`You've created ${result.compound}!`);
-        if (result.isNew) {
-          toast.info("New discovery added to your grimoire!");
-        }
-        setSelectedElements([]);
-      } else {
-        toast.error(result.message);
+    if (animating) return;
+
+    // Check if player has enough elements before starting animation
+    for (const element of selectedElements) {
+      if ((gameState.elements[element] || 0) < 1) {
+        toast.error(`Not enough ${element}!`);
+        return;
       }
+    }
+
+    // Find the compound that would be created
+    const sortedElements = selectedElements.sort();
+    const compound = Object.entries(COMPOUNDS).find(([_, data]) => {
+      const requiredElements = data.recipe.sort();
+      return JSON.stringify(sortedElements) === JSON.stringify(requiredElements);
+    });
+
+    if (!compound) {
+      toast.error('No known compound can be created with these elements.');
+      return;
+    }
+
+    const [compoundName] = compound;
+    setTransmutationResultCompound(compoundName);
+    setAnimating(true);
+    setAnimationStep('pre-transmute');
+
+    // Pre-transmute phase (0.5s)
+    setTimeout(() => {
+      setAnimationStep('filling');
       
-      setAnimating(false);
-    }, 1500);
+      // Filling animation (1.5s)
+      const fillDuration = 1500;
+      const fillInterval = 50;
+      const fillSteps = fillDuration / fillInterval;
+      let currentStep = 0;
+
+      const fillTimer = setInterval(() => {
+        currentStep++;
+        const progress = (currentStep / fillSteps) * 100;
+        setFillProgress(Math.min(progress, 100));
+
+        if (currentStep >= fillSteps) {
+          clearInterval(fillTimer);
+          
+          // Perform actual transmutation
+          const result = actions.transmute(selectedElements);
+          
+          if (result.success) {
+            // Play success sound effect (placeholder)
+            // playSuccessSound();
+            
+            setAnimationStep('blooming');
+            
+            if (result.isNew) {
+              toast.info("New discovery added to your grimoire!");
+            }
+            
+            // Blooming phase (1s)
+            setTimeout(() => {
+              toast.success(`You've created ${result.compound}!`);
+              
+              // Reset all animation states
+              setAnimating(false);
+              setAnimationStep('idle');
+              setFillProgress(0);
+              setTransmutationResultCompound(null);
+              setSelectedElements([]);
+            }, 1000);
+          } else {
+            // Handle failure
+            toast.error(result.message);
+            setAnimating(false);
+            setAnimationStep('idle');
+            setFillProgress(0);
+            setTransmutationResultCompound(null);
+          }
+        }
+      }, fillInterval);
+    }, 500);
   };
 
   const getElementIcon = (element: string) => {
@@ -84,6 +152,83 @@ export const Laboratory: React.FC = () => {
       if (!aIsBase && bIsBase) return 1;
       return a.localeCompare(b);
     });
+
+  const renderCrucibleContent = () => {
+    switch (animationStep) {
+      case 'idle':
+        return selectedElements.length > 0 ? (
+          <div className="flex flex-wrap justify-center gap-1">
+            {selectedElements.map((element) => (
+              <div key={element} className="text-3xl animate-bubble">
+                {ELEMENTS[element]?.emoji}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Beaker size={48} className="text-brass-500/50" />
+        );
+
+      case 'pre-transmute':
+        return (
+          <div className="flex flex-wrap justify-center gap-1">
+            {selectedElements.map((element) => (
+              <div key={element} className="text-3xl animate-pulse">
+                {ELEMENTS[element]?.emoji}
+              </div>
+            ))}
+          </div>
+        );
+
+      case 'filling':
+        const compoundData = transmutationResultCompound ? COMPOUNDS[transmutationResultCompound] : null;
+        return (
+          <div className="relative w-20 h-24">
+            {/* Flask container */}
+            <div className="absolute inset-0 flex items-end justify-center">
+              <div className="relative w-16 h-20 border-4 border-brass-400 rounded-b-full bg-transparent overflow-hidden">
+                {/* Liquid fill */}
+                <div 
+                  className="flask-liquid absolute bottom-0 left-0 right-0 transition-all duration-100 ease-out"
+                  style={{ 
+                    height: `${fillProgress}%`,
+                    backgroundColor: compoundData?.color || '#fcd34d',
+                  }}
+                />
+              </div>
+            </div>
+            {/* Flask neck */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-6 border-4 border-t-0 border-brass-400 bg-transparent" />
+          </div>
+        );
+
+      case 'blooming':
+        const bloomCompoundData = transmutationResultCompound ? COMPOUNDS[transmutationResultCompound] : null;
+        return (
+          <div className="relative w-20 h-24">
+            {/* Filled flask */}
+            <div className="absolute inset-0 flex items-end justify-center">
+              <div className="relative w-16 h-20 border-4 border-brass-400 rounded-b-full bg-transparent overflow-hidden">
+                <div 
+                  className="absolute bottom-0 left-0 right-0 h-full"
+                  style={{ 
+                    backgroundColor: bloomCompoundData?.color || '#fcd34d',
+                  }}
+                />
+              </div>
+            </div>
+            {/* Flask neck */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-6 border-4 border-t-0 border-brass-400 bg-transparent" />
+            {/* Blooming flower */}
+            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-4xl flask-flower animate-bloom-flower">
+              {bloomCompoundData?.flowerEmoji || bloomCompoundData?.emoji || '🌸'}
+            </div>
+          </div>
+        );
+
+      default:
+        return <Beaker size={48} className="text-brass-500/50" />;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -129,19 +274,9 @@ export const Laboratory: React.FC = () => {
           
           <div className="flex flex-col items-center">
             <div className={`relative w-36 h-36 bg-gradient-to-br from-amber-900/60 to-amber-800/40 border-4 border-brass-600/80 rounded-full flex items-center justify-center mb-6 shadow-steampunk ${animating ? 'animate-pulse crucible-glow' : ''}`}>
-              {selectedElements.length > 0 ? (
-                <div className="flex flex-wrap justify-center gap-1">
-                  {selectedElements.map((element) => (
-                    <div key={element} className="text-3xl animate-bubble">
-                      {ELEMENTS[element]?.emoji}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <Beaker size={48} className="text-brass-500/50" />
-              )}
+              {renderCrucibleContent()}
               
-              {animating && (
+              {animating && animationStep !== 'filling' && animationStep !== 'blooming' && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-full h-full bg-brass-400/20 rounded-full animate-ping"></div>
                   <div className="absolute w-3/4 h-3/4 bg-brass-300/30 rounded-full animate-ping" style={{animationDelay: '0.5s'}}></div>
@@ -163,7 +298,7 @@ export const Laboratory: React.FC = () => {
               {animating ? 'Transmuting...' : 'Transmute Elements'}
             </button>
             
-            {selectedElements.length > 0 && (
+            {selectedElements.length > 0 && !animating && (
               <button
                 onClick={() => setSelectedElements([])}
                 className="mt-3 text-brass-400 text-sm hover:text-brass-300 font-body underline transition-colors"

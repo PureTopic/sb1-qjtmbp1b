@@ -85,6 +85,21 @@
     @apply absolute top-4 left-4 right-4 bottom-4 
            border border-brass-500/30 rounded-lg pointer-events-none;
   }
+
+  .flask-liquid {
+    background: linear-gradient(180deg, 
+      rgba(255, 255, 255, 0.3) 0%, 
+      rgba(255, 255, 255, 0.1) 50%, 
+      rgba(0, 0, 0, 0.1) 100%);
+    border-radius: 0 0 50% 50%;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    animation: fill-flask 0.1s ease-out;
+  }
+
+  .flask-flower {
+    filter: drop-shadow(0 0 8px rgba(252, 211, 77, 0.6));
+    animation: bloom-flower 1s ease-out;
+  }
 }
 
 /* Custom scrollbar for steampunk aesthetic */
@@ -106,4 +121,47 @@
     radial-gradient(circle at 25% 25%, rgba(252, 211, 77, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, rgba(146, 64, 14, 0.1) 0%, transparent 50%),
     linear-gradient(45deg, transparent 49%, rgba(252, 211, 77, 0.03) 50%, transparent 51%);
+}
+
+/* Flask and flower animations */
+@keyframes fill-flask {
+  from {
+    transform: scaleY(0);
+    opacity: 0.7;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bloom-flower {
+  0% {
+    transform: translateX(-50%) scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2) rotate(-90deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Enhanced existing animations */
+@keyframes steam {
+  '0%, 100%': { transform: 'translateY(0) scale(1)', opacity: '0.7' },
+  '50%': { transform: 'translateY(-10px) scale(1.1)', opacity: '1' },
+}
+
+@keyframes glow {
+  '0%': { boxShadow: '0 0 5px rgba(252, 211, 77, 0.3)' },
+  '100%': { boxShadow: '0 0 20px rgba(252, 211, 77, 0.6)' },
+}
+
+@keyframes bubble {
+  '0%, 100%': { transform: 'translateY(0)' },
+  '50%': { transform: 'translateY(-5px)' },
 }
