@@ -51,6 +51,7 @@ export default {
         },
         // Keep some brass for accent elements
         brass: {
+          100: '#fef3c7',
           200: '#fbbf24',
           300: '#f59e0b',
           400: '#d97706',
@@ -58,6 +59,7 @@ export default {
           600: '#92400e',
           700: '#78350f',
           800: '#451a03',
+          900: '#1c0a00',
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -114,11 +116,13 @@ export default {
         'sleek-gradient': 'linear-gradient(135deg, #020617 0%, #0f172a 25%, #1e293b 50%, #334155 75%, #475569 100%)',
         'neon-gradient': 'linear-gradient(135deg, #0ea5e9 0%, #38bdf8 50%, #7dd3fc 100%)',
         'electric-gradient': 'linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%)',
+        'brass-gradient': 'linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%)',
         'glass-panel': 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
       },
       boxShadow: {
         'neon': '0 0 20px rgba(14, 165, 233, 0.3), 0 0 40px rgba(14, 165, 233, 0.1)',
         'electric': '0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1)',
+        'brass': '0 0 20px rgba(217, 119, 6, 0.3), 0 0 40px rgba(217, 119, 6, 0.1)',
         'glass': '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
         'sleek': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         'glow': '0 0 20px rgba(14, 165, 233, 0.4)',
@@ -163,6 +167,14 @@ export default {
           "0%": { transform: "translateY(20px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
+        "bubble": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
+        "glow": {
+          "0%, 100%": { boxShadow: "0 0 5px rgba(252, 211, 77, 0.3)" },
+          "50%": { boxShadow: "0 0 20px rgba(252, 211, 77, 0.6)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -171,6 +183,8 @@ export default {
         "neon-pulse": "neon-pulse 2s ease-in-out infinite",
         "electric-flow": "electric-flow 3s linear infinite",
         "slide-up": "slide-up 0.5s ease-out",
+        "bubble": "bubble 2s ease-in-out infinite",
+        "glow": "glow 2s ease-in-out infinite alternate",
       },
     },
   },

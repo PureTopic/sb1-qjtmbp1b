@@ -5,10 +5,13 @@ import { ElementDisplay } from './ElementDisplay';
 import { GameStats } from './GameStats';
 import { ProfessorPip } from './ProfessorPip';
 import { ProgressionChart } from './ProgressionChart';
-import { Sparkles, FlaskConical } from 'lucide-react';
+import { Sparkles, FlaskConical, Flame, TrendingUp } from 'lucide-react';
 
 export const Home: React.FC = () => {
   const { gameState, actions } = useGame();
+  
+  // Calculate total calcinations for display
+  const totalCalcinations = Object.values(gameState.calcinationCounts).reduce((sum, count) => sum + count, 0);
   
   return (
     <div className="space-y-8">
@@ -43,12 +46,75 @@ export const Home: React.FC = () => {
                     <h4 className="font-display font-bold text-white mb-2">AI Assistant Guidance</h4>
                     <p className="font-body italic text-gray-300 leading-relaxed">
                       "System initialized! Begin by accessing the Laboratory interface to collect base elements. 
-                      The quantum transmutation engine awaits your input to unlock advanced molecular compounds."
+                      Upgrade your extractors and perform Calcination to unlock permanent bonuses for enhanced production."
                     </p>
                   </div>
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Progression Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="panel-glass p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-electric-400 text-sm font-body mb-1 flex items-center gap-2">
+                <Sparkles size={16} />
+                Alchemical Energy
+              </div>
+              <div className="text-2xl font-display font-bold text-electric-100">
+                {formatNumber(gameState.alchemicalEnergy)}
+              </div>
+            </div>
+            <div className="text-3xl opacity-20">⚡</div>
+          </div>
+        </div>
+
+        <div className="panel-glass p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-brass-400 text-sm font-body mb-1 flex items-center gap-2">
+                <Flame size={16} />
+                Calcinations
+              </div>
+              <div className="text-2xl font-display font-bold text-brass-100">
+                {totalCalcinations}
+              </div>
+            </div>
+            <div className="text-3xl opacity-20">🔥</div>
+          </div>
+        </div>
+
+        <div className="panel-glass p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-neon-400 text-sm font-body mb-1 flex items-center gap-2">
+                <TrendingUp size={16} />
+                Discoveries
+              </div>
+              <div className="text-2xl font-display font-bold text-neon-100">
+                {gameState.discoveries.length}
+              </div>
+            </div>
+            <div className="text-3xl opacity-20">🔍</div>
+          </div>
+        </div>
+
+        <div className="panel-glass p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-purple-400 text-sm font-body mb-1 flex items-center gap-2">
+                <FlaskConical size={16} />
+                Homunculi
+              </div>
+              <div className="text-2xl font-display font-bold text-purple-100">
+                {gameState.homunculi.length}
+              </div>
+            </div>
+            <div className="text-3xl opacity-20">🧙‍♂️</div>
           </div>
         </div>
       </div>
@@ -83,6 +149,35 @@ export const Home: React.FC = () => {
         
         <GameStats />
       </div>
+
+      {/* Calcination Status */}
+      {totalCalcinations > 0 && (
+        <div className="panel-steampunk p-6">
+          <h2 className="text-2xl font-display font-bold text-steampunk-header mb-6 flex items-center gap-3">
+            <Flame className="text-brass-400 animate-glow" size={24} />
+            Calcination Mastery
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {Object.entries(gameState.calcinationCounts)
+              .filter(([_, count]) => count > 0)
+              .map(([element, count]) => {
+                const purityBonus = gameState.calcinatedPurityBonuses[element] || 1.0;
+                const bonusPercent = Math.round((purityBonus - 1) * 100);
+                
+                return (
+                  <div key={element} className="element-card p-4 hover:shadow-glow">
+                    <div className="text-center">
+                      <div className="text-3xl mb-2">{ELEMENTS[element]?.emoji}</div>
+                      <div className="font-display capitalize text-lg text-brass-200 mb-1">{element}</div>
+                      <div className="text-sm text-brass-400 mb-1">Calcinations: {count}</div>
+                      <div className="text-sm text-brass-300 font-semibold">+{bonusPercent}% Production</div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      )}
 
       {/* Progress Section */}
       <div className="panel-steampunk p-6">

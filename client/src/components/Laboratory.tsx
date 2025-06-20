@@ -4,7 +4,7 @@ import { ElementDisplay } from './ElementDisplay';
 import { toast } from 'react-toastify';
 import { formatNumber } from '../utils/formatters';
 import { ELEMENTS, COMPOUNDS } from '../data/elements';
-import { Beaker, FlaskConical, Zap, Droplets, Wind, Hammer, Sparkles } from 'lucide-react';
+import { Beaker, FlaskConical, Zap, Droplets, Wind, Hammer, Sparkles, TrendingUp, Flame } from 'lucide-react';
 
 type AnimationStep = 'idle' | 'pre-transmute' | 'filling' | 'blooming';
 
@@ -94,9 +94,6 @@ export const Laboratory: React.FC = () => {
           const result = actions.transmute(selectedElements);
           
           if (result.success) {
-            // Play success sound effect (placeholder)
-            // playSuccessSound();
-            
             setAnimationStep('blooming');
             
             if (result.isNew) {
@@ -127,14 +124,38 @@ export const Laboratory: React.FC = () => {
     }, 500);
   };
 
-  const getElementIcon = (element: string) => {
-    switch(element) {
-      case 'fire': return <Zap className="text-red-500" />;
-      case 'water': return <Droplets className="text-blue-500" />;
-      case 'earth': return <Hammer className="text-amber-700" />;
-      case 'air': return <Wind className="text-sky-300" />;
-      default: return <FlaskConical className="text-purple-400" />;
+  const handleUpgradeExtractor = (element: string) => {
+    const result = actions.upgradeExtractor(element);
+    if (result.success) {
+      toast.success(result.message);
+    } else {
+      toast.error(result.message);
     }
+  };
+
+  const handleCalcinateElement = (element: string) => {
+    const result = actions.calcinateElement(element);
+    if (result.success) {
+      toast.success(result.message);
+    } else {
+      toast.warning(result.message);
+    }
+  };
+
+  const canCalcinate = (element: string) => {
+    const extractorLevel = gameState.extractorLevels[element] || 1;
+    const totalProduced = gameState.totalProduced[element] || 0;
+    const calcinationCount = gameState.calcinationCounts[element] || 0;
+    
+    const levelRequirement = 10 + (calcinationCount * 5);
+    const productionRequirement = 1000 * Math.pow(2, calcinationCount);
+    
+    return extractorLevel >= levelRequirement && totalProduced >= productionRequirement;
+  };
+
+  const getUpgradeCost = (element: string) => {
+    const currentLevel = gameState.extractorLevels[element] || 1;
+    return Math.floor(10 * Math.pow(1.5, currentLevel - 1));
   };
 
   const baseElements = Object.entries(ELEMENTS)
@@ -232,6 +253,19 @@ export const Laboratory: React.FC = () => {
 
   return (
     <div className="space-y-8">
+      {/* Alchemical Energy Display */}
+      <div className="panel-glass p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Sparkles className="text-electric-400 animate-float" size={24} />
+            <h2 className="text-xl font-display font-bold text-white">Alchemical Energy</h2>
+          </div>
+          <div className="text-2xl font-display font-bold text-electric-400">
+            {formatNumber(gameState.alchemicalEnergy)}
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Element Generation Section */}
         <div className="panel-glass p-8 md:col-span-2">
@@ -239,27 +273,95 @@ export const Laboratory: React.FC = () => {
             <Sparkles className="text-electric-400 animate-float" />
             Quantum Generators
           </h2>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {baseElements.map((element) => {
               const elementData = ELEMENTS[element];
               const rate = gameState.generationRates[element];
               const currentAmount = gameState.elements[element] || 0;
+              const extractorLevel = gameState.extractorLevels[element] || 1;
+              const purityBonus = gameState.calcinatedPurityBonuses[element] || 1.0;
+              const calcinationCount = gameState.calcinationCounts[element] || 0;
+              const totalProduced = gameState.totalProduced[element] || 0;
+              const upgradeCost = getUpgradeCost(element);
+              const canAffordUpgrade = gameState.alchemicalEnergy >= upgradeCost;
               
               return (
-                <button 
-                  key={element}
-                  onClick={() => actions.gatherElement(element)}
-                  className="element-card-modern p-6 flex flex-col items-center justify-center group"
-                >
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {elementData.emoji}
+                <div key={element} className="element-card-modern p-6 space-y-4">
+                  {/* Element Header */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="text-4xl">{elementData.emoji}</div>
+                      <div>
+                        <div className="font-display capitalize text-xl text-white">{element}</div>
+                        <div className="text-sm text-gray-400">Level {extractorLevel}</div>
+                      </div>
+                    </div>
+                    {calcinationCount > 0 && (
+                      <div className="flex items-center gap-1 bg-brass-gradient px-2 py-1 rounded-full">
+                        <Flame size={12} />
+                        <span className="text-xs font-bold text-white">{calcinationCount}</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="font-display capitalize text-xl text-white mb-2">{element}</div>
-                  <div className="text-lg text-neon-300 font-semibold">{formatNumber(currentAmount)}</div>
-                  <div className="text-sm text-gray-400 mt-2 glass-morphism px-3 py-1 rounded-full">
-                    +{formatNumber(rate)}/sec
+
+                  {/* Production Stats */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">Current:</span>
+                      <span className="text-lg text-neon-300 font-semibold">{formatNumber(currentAmount)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">Rate:</span>
+                      <span className="text-sm text-gray-300">+{formatNumber(rate * extractorLevel * purityBonus)}/sec</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-400">Total Produced:</span>
+                      <span className="text-sm text-gray-300">{formatNumber(totalProduced)}</span>
+                    </div>
+                    {purityBonus > 1.0 && (
+                      <div className="flex justify-between">
+                        <span className="text-sm text-brass-400">Purity Bonus:</span>
+                        <span className="text-sm text-brass-300">+{Math.round((purityBonus - 1) * 100)}%</span>
+                      </div>
+                    )}
                   </div>
-                </button>
+
+                  {/* Action Buttons */}
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => actions.gatherElement(element)}
+                        className="flex-1 btn-sleek text-sm py-2"
+                      >
+                        Gather
+                      </button>
+                      <button
+                        onClick={() => handleUpgradeExtractor(element)}
+                        disabled={!canAffordUpgrade}
+                        className={`flex-1 text-sm py-2 px-3 rounded-lg transition-all ${
+                          canAffordUpgrade 
+                            ? 'bg-electric-gradient hover:shadow-electric text-white' 
+                            : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                        }`}
+                      >
+                        Upgrade ({upgradeCost})
+                      </button>
+                    </div>
+                    
+                    <button
+                      onClick={() => handleCalcinateElement(element)}
+                      disabled={!canCalcinate(element)}
+                      className={`w-full text-sm py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
+                        canCalcinate(element)
+                          ? 'bg-brass-gradient hover:shadow-glow text-white font-semibold'
+                          : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                      }`}
+                    >
+                      <Flame size={16} />
+                      Calcinate {element.charAt(0).toUpperCase() + element.slice(1)}
+                    </button>
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -341,7 +443,7 @@ export const Laboratory: React.FC = () => {
           <div className="text-center py-12">
             <FlaskConical className="mx-auto text-brass-600/50 mb-4" size={64} />
             <p className="text-brass-400 italic font-body text-lg">
-              No elements available. Start by gathering the basic elements from the crucibles above!
+              No elements available. Start by gathering the basic elements from the generators above!
             </p>
           </div>
         )}
