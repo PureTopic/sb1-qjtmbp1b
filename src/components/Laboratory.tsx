@@ -4,7 +4,7 @@ import { ElementDisplay } from './ElementDisplay';
 import { toast } from 'react-toastify';
 import { formatNumber } from '../utils/formatters';
 import { ELEMENTS, COMPOUNDS } from '../data/elements';
-import { Beaker, Flask, Zap, Droplets, Wind, Hammer } from 'lucide-react';
+import { Beaker, FlaskConical, Zap, Droplets, Wind, Hammer } from 'lucide-react';
 
 export const Laboratory: React.FC = () => {
   const { gameState, actions } = useGame();
@@ -65,7 +65,7 @@ export const Laboratory: React.FC = () => {
       case 'water': return <Droplets className="text-blue-500" />;
       case 'earth': return <Hammer className="text-amber-700" />;
       case 'air': return <Wind className="text-sky-300" />;
-      default: return <Flask className="text-purple-400" />;
+      default: return <FlaskConical className="text-purple-400" />;
     }
   };
 

@@ -7,7 +7,7 @@ import { GameProvider } from './context/GameContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
-import { Beaker, BookOpen, Flask, Home as HomeIcon } from 'lucide-react';
+import { Beaker, BookOpen, FlaskConical, Home as HomeIcon } from 'lucide-react';
 import { Homunculi } from './components/Homunculi';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
   
   const tabs = [
     { id: 'home', label: 'Home', icon: <HomeIcon size={20} /> },
-    { id: 'laboratory', label: 'Laboratory', icon: <Flask size={20} /> },
+    { id: 'laboratory', label: 'Laboratory', icon: <FlaskConical size={20} /> },
     { id: 'grimoire', label: 'Grimoire', icon: <BookOpen size={20} /> },
     { id: 'homunculi', label: 'Homunculi', icon: <Beaker size={20} /> },
   ];
