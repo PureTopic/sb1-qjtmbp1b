@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useGame } from '../context/GameContext';
 import { COMPOUNDS, ELEMENTS } from '../data/elements';
 import { formatNumber } from '../utils/formatters';
-import { Book, Lock, Sparkles } from 'lucide-react';
+import { Book, Lock, Sparkles, Scroll, Star } from 'lucide-react';
 
 export const Grimoire: React.FC = () => {
   const { gameState } = useGame();
@@ -28,48 +28,70 @@ export const Grimoire: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-amber-950/60 border border-amber-700/50 rounded-lg p-6 shadow-lg backdrop-blur-sm">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-amber-200 font-serif tracking-wide flex items-center gap-3">
-              <Book className="text-amber-300" />
-              Alchemist's Grimoire
-            </h1>
-            <p className="text-amber-100 mt-1">
-              Your repository of alchemical knowledge and discoveries
-            </p>
+      {/* Header Section */}
+      <div className="grimoire-book p-8 shadow-2xl">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <Book className="text-brass-300 animate-glow" size={48} />
+              <Scroll className="absolute -top-2 -right-2 text-brass-400" size={20} />
+            </div>
+            <div>
+              <h1 className="text-4xl font-display font-bold text-steampunk-header tracking-wide mb-2">
+                The Alchemist's Grimoire
+              </h1>
+              <p className="text-steampunk-body text-lg opacity-90">
+                Your repository of alchemical knowledge and mystical discoveries
+              </p>
+            </div>
           </div>
 
-          <div className="bg-amber-900/40 px-4 py-2 rounded-lg">
-            <p className="text-sm text-amber-300">Discoveries</p>
-            <p className="text-xl font-bold text-amber-100">{discoveredCompounds} / {totalCompounds}</p>
-            <div className="w-full bg-amber-950 rounded-full h-2 mt-1">
-              <div 
-                className="bg-gradient-to-r from-amber-600 to-amber-400 h-2 rounded-full" 
-                style={{ width: `${completionPercentage}%` }}
-              ></div>
+          <div className="bg-gradient-to-br from-emerald-900/60 to-emerald-800/40 px-6 py-4 rounded-xl border-2 border-emerald-600/50 shadow-steampunk">
+            <div className="text-center">
+              <p className="text-sm text-emerald-300 font-body mb-1">Discoveries Catalogued</p>
+              <p className="text-3xl font-display font-bold text-emerald-100">{discoveredCompounds} / {totalCompounds}</p>
+              <div className="w-32 bg-emerald-950/60 rounded-full h-3 mt-2 border border-emerald-700/50">
+                <div 
+                  className="bg-gradient-to-r from-emerald-500 to-emerald-400 h-full rounded-full shadow-glow transition-all duration-500" 
+                  style={{ width: `${completionPercentage}%` }}
+                ></div>
+              </div>
+              <p className="text-xs text-emerald-400/80 mt-1">{completionPercentage.toFixed(1)}% Complete</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-amber-950/60 border border-amber-700/50 rounded-lg p-6 shadow-lg backdrop-blur-sm">
-        <div className="mb-6 flex flex-wrap gap-2">
+      {/* Category Filter Section */}
+      <div className="panel-steampunk p-6">
+        <h3 className="text-xl font-display font-bold text-steampunk-header mb-4 flex items-center gap-2">
+          <Star className="text-brass-400" size={20} />
+          Knowledge Categories
+        </h3>
+        <div className="flex flex-wrap gap-3">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm font-body font-medium transition-all duration-300 ${
                 selectedCategory === category
-                  ? 'bg-amber-600 text-amber-100' 
-                  : 'bg-amber-900/40 text-amber-400 hover:bg-amber-800/60'
+                  ? 'btn-steampunk transform scale-105' 
+                  : 'bg-gradient-to-r from-amber-900/40 to-amber-800/30 text-brass-300 border border-brass-600/30 hover:border-brass-500/50 hover:text-brass-200 hover:shadow-inner-glow'
               }`}
             >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
+              {category.charAt(0).toUpperCase() + category.slice(1).replace('_', ' ')}
             </button>
           ))}
         </div>
+      </div>
 
+      {/* Discoveries Grid */}
+      <div className="panel-steampunk p-6">
+        <h3 className="text-xl font-display font-bold text-steampunk-header mb-6 flex items-center gap-2">
+          <Sparkles className="text-brass-400 animate-glow" size={20} />
+          Discovered Compounds
+        </h3>
+        
         {filteredDiscoveries.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {filteredDiscoveries.map((discovery) => {
@@ -77,18 +99,24 @@ export const Grimoire: React.FC = () => {
               return (
                 <div
                   key={discovery}
-                  className="bg-amber-900/40 border border-amber-700/30 rounded-lg p-4 flex flex-col items-center"
+                  className="element-card p-5 flex flex-col items-center group hover:shadow-glow"
                 >
-                  <div className="text-3xl mb-2">{elementData.emoji}</div>
-                  <div className="font-serif capitalize text-center text-lg text-amber-200">{discovery}</div>
-                  <div className="text-xs text-amber-400 mt-1">{elementData.category}</div>
+                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                    {elementData.emoji}
+                  </div>
+                  <div className="font-display capitalize text-center text-lg text-brass-200 mb-2">
+                    {discovery}
+                  </div>
+                  <div className="text-xs text-brass-400/80 bg-amber-900/30 px-2 py-1 rounded-full mb-2">
+                    {elementData.category.replace('_', ' ')}
+                  </div>
                   {elementData.tier && (
-                    <div className="text-xs text-amber-300/70 mt-1">
+                    <div className="text-xs text-brass-300/70 bg-brass-800/30 px-2 py-1 rounded-full mb-2">
                       Tier {elementData.tier}
                     </div>
                   )}
                   {elementData.formula && (
-                    <div className="mt-2 text-xs text-amber-300/70">
+                    <div className="text-xs text-center text-amber-300/80 font-body bg-amber-950/40 px-2 py-1 rounded border border-amber-700/30">
                       {elementData.formula}
                     </div>
                   )}
@@ -97,18 +125,22 @@ export const Grimoire: React.FC = () => {
             })}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <Lock className="mx-auto text-amber-700 mb-3" size={48} />
-            <p className="text-amber-400 italic">
-              No discoveries in this category yet. Continue experimenting in the Laboratory!
+          <div className="text-center py-16">
+            <Lock className="mx-auto text-brass-600/50 mb-4 animate-pulse" size={64} />
+            <p className="text-brass-400 italic font-body text-lg mb-2">
+              No discoveries in this category yet.
+            </p>
+            <p className="text-brass-500/80 font-body">
+              Continue experimenting in the Laboratory to unlock new knowledge!
             </p>
           </div>
         )}
       </div>
 
-      <div className="bg-amber-950/60 border border-amber-700/50 rounded-lg p-6 shadow-lg backdrop-blur-sm">
-        <h2 className="text-2xl font-serif font-bold text-amber-200 mb-4 flex items-center gap-2">
-          <Sparkles className="text-amber-300" size={20} />
+      {/* Masteries Section */}
+      <div className="panel-steampunk p-6">
+        <h2 className="text-2xl font-display font-bold text-steampunk-header mb-6 flex items-center gap-3">
+          <Sparkles className="text-brass-300 animate-glow" size={24} />
           Alchemical Masteries
         </h2>
         
@@ -116,26 +148,29 @@ export const Grimoire: React.FC = () => {
           {gameState.masteries.map((mastery, index) => (
             <div 
               key={index}
-              className="bg-amber-900/30 border border-amber-700/30 rounded-lg p-4"
+              className="element-card p-5 hover:shadow-glow"
             >
-              <h3 className="text-lg font-serif font-bold text-amber-300">{mastery.name}</h3>
-              <p className="text-sm text-amber-100 mt-1">{mastery.description}</p>
-              <div className="flex items-center gap-2 mt-2">
-                <div className="text-xs text-amber-400">Level {mastery.level}</div>
-                <div className="flex-1 h-1 bg-amber-950 rounded-full">
+              <h3 className="text-lg font-display font-bold text-brass-300 mb-2">{mastery.name}</h3>
+              <p className="text-sm text-steampunk-body mb-3">{mastery.description}</p>
+              <div className="flex items-center gap-3">
+                <div className="text-xs text-brass-400 bg-brass-900/30 px-2 py-1 rounded-full">
+                  Level {mastery.level}
+                </div>
+                <div className="flex-1 h-2 bg-amber-950/60 rounded-full border border-amber-800/50">
                   <div 
-                    className="h-1 bg-amber-500 rounded-full" 
+                    className="h-full bg-brass-gradient rounded-full shadow-glow transition-all duration-500" 
                     style={{ width: `${mastery.progress}%` }}
                   ></div>
                 </div>
-                <div className="text-xs text-amber-400">{mastery.progress}%</div>
+                <div className="text-xs text-brass-400 font-semibold">{mastery.progress}%</div>
               </div>
             </div>
           ))}
           
           {gameState.masteries.length === 0 && (
-            <div className="col-span-full text-center py-6">
-              <p className="text-amber-400 italic">
+            <div className="col-span-full text-center py-12">
+              <Star className="mx-auto text-brass-600/50 mb-4" size={48} />
+              <p className="text-brass-400 italic font-body text-lg">
                 You haven't unlocked any masteries yet. Continue your alchemical journey to discover them!
               </p>
             </div>

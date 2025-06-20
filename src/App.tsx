@@ -38,14 +38,20 @@ function App() {
 
   return (
     <GameProvider>
-      <div className="relative min-h-screen bg-gradient-to-b from-amber-900/90 to-emerald-950 text-amber-100 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/src/assets/parchment-texture.png')] opacity-5 mix-blend-overlay pointer-events-none z-0"></div>
+      <div className="relative min-h-screen bg-steampunk-gradient text-amber-100 overflow-hidden">
+        {/* Parchment texture overlay */}
+        <div className="absolute inset-0 parchment-overlay opacity-30 mix-blend-overlay pointer-events-none z-0"></div>
+        
+        {/* Ambient steam effects */}
+        <div className="absolute top-10 left-10 w-4 h-4 bg-steam-300/20 rounded-full animate-steam"></div>
+        <div className="absolute top-20 right-20 w-3 h-3 bg-steam-300/15 rounded-full animate-steam" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-32 left-1/4 w-5 h-5 bg-steam-300/10 rounded-full animate-steam" style={{animationDelay: '2s'}}></div>
         
         <div className="relative z-10 flex flex-col h-screen">
           <Navbar activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} />
           
-          <main className="flex-1 overflow-y-auto pb-20 scrollbar-thin scrollbar-thumb-amber-700 scrollbar-track-transparent">
-            <div className="container mx-auto px-4 py-4">
+          <main className="flex-1 overflow-y-auto pb-20 scrollbar-steampunk">
+            <div className="container mx-auto px-4 py-6">
               {renderContent()}
             </div>
           </main>
@@ -61,6 +67,8 @@ function App() {
             draggable
             pauseOnHover
             theme="dark"
+            toastClassName="bg-amber-950/95 border border-brass-600/50 text-amber-100"
+            progressClassName="bg-brass-500"
           />
         </div>
       </div>

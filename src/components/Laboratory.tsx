@@ -4,7 +4,7 @@ import { ElementDisplay } from './ElementDisplay';
 import { toast } from 'react-toastify';
 import { formatNumber } from '../utils/formatters';
 import { ELEMENTS, COMPOUNDS } from '../data/elements';
-import { Beaker, FlaskConical, Zap, Droplets, Wind, Hammer } from 'lucide-react';
+import { Beaker, FlaskConical, Zap, Droplets, Wind, Hammer, Sparkles } from 'lucide-react';
 
 export const Laboratory: React.FC = () => {
   const { gameState, actions } = useGame();
@@ -89,8 +89,11 @@ export const Laboratory: React.FC = () => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Element Generation Section */}
-        <div className="bg-amber-950/60 border border-amber-700/50 rounded-lg p-6 shadow-lg backdrop-blur-sm md:col-span-2">
-          <h2 className="text-2xl font-serif font-bold text-amber-200 mb-4">Element Generation</h2>
+        <div className="panel-steampunk p-6 md:col-span-2">
+          <h2 className="text-2xl font-display font-bold text-steampunk-header mb-6 flex items-center gap-3">
+            <Sparkles className="text-brass-400 animate-glow" />
+            Elemental Crucibles
+          </h2>
           <div className="grid grid-cols-2 gap-4">
             {baseElements.map((element) => {
               const elementData = ELEMENTS[element];
@@ -101,12 +104,14 @@ export const Laboratory: React.FC = () => {
                 <button 
                   key={element}
                   onClick={() => actions.gatherElement(element)}
-                  className="flex flex-col items-center justify-center bg-amber-900/40 hover:bg-amber-800/50 border border-amber-700/30 rounded-lg p-4 transition-colors"
+                  className="element-card p-6 flex flex-col items-center justify-center hover:crucible-glow group"
                 >
-                  <div className="text-3xl mb-2">{elementData.emoji}</div>
-                  <div className="font-serif capitalize text-lg text-amber-200">{element}</div>
-                  <div className="text-sm text-amber-400">{formatNumber(currentAmount)}</div>
-                  <div className="text-xs text-amber-300/70 mt-1">
+                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                    {elementData.emoji}
+                  </div>
+                  <div className="font-display capitalize text-xl text-brass-200 mb-2">{element}</div>
+                  <div className="text-lg text-amber-300 font-semibold">{formatNumber(currentAmount)}</div>
+                  <div className="text-sm text-brass-400/80 mt-2 bg-amber-900/30 px-3 py-1 rounded-full">
                     +{formatNumber(rate)}/sec
                   </div>
                 </button>
@@ -116,42 +121,52 @@ export const Laboratory: React.FC = () => {
         </div>
 
         {/* Transmutation Crucible Section */}
-        <div className="bg-amber-950/60 border border-amber-700/50 rounded-lg p-6 shadow-lg backdrop-blur-sm">
-          <h2 className="text-2xl font-serif font-bold text-amber-200 mb-4">Transmutation Crucible</h2>
+        <div className="panel-steampunk p-6">
+          <h2 className="text-2xl font-display font-bold text-steampunk-header mb-6 flex items-center gap-2">
+            <FlaskConical className="text-brass-400" />
+            Transmutation Crucible
+          </h2>
           
           <div className="flex flex-col items-center">
-            <div className={`relative w-32 h-32 bg-amber-900/40 border-4 border-amber-700/80 rounded-full flex items-center justify-center mb-4 ${animating ? 'animate-pulse' : ''}`}>
+            <div className={`relative w-36 h-36 bg-gradient-to-br from-amber-900/60 to-amber-800/40 border-4 border-brass-600/80 rounded-full flex items-center justify-center mb-6 shadow-steampunk ${animating ? 'animate-pulse crucible-glow' : ''}`}>
               {selectedElements.length > 0 ? (
-                <div className="flex flex-wrap justify-center">
+                <div className="flex flex-wrap justify-center gap-1">
                   {selectedElements.map((element) => (
-                    <div key={element} className="text-2xl m-1">
+                    <div key={element} className="text-3xl animate-bubble">
                       {ELEMENTS[element]?.emoji}
                     </div>
                   ))}
                 </div>
               ) : (
-                <Beaker size={40} className="text-amber-500/50" />
+                <Beaker size={48} className="text-brass-500/50" />
               )}
               
               {animating && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-full h-full bg-amber-400/20 rounded-full animate-ping"></div>
+                  <div className="w-full h-full bg-brass-400/20 rounded-full animate-ping"></div>
+                  <div className="absolute w-3/4 h-3/4 bg-brass-300/30 rounded-full animate-ping" style={{animationDelay: '0.5s'}}></div>
                 </div>
               )}
+              
+              {/* Decorative brass elements */}
+              <div className="absolute -top-2 -left-2 w-4 h-4 bg-brass-gradient rounded-full shadow-brass"></div>
+              <div className="absolute -top-2 -right-2 w-4 h-4 bg-brass-gradient rounded-full shadow-brass"></div>
+              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-brass-gradient rounded-full shadow-brass"></div>
+              <div className="absolute -bottom-2 -right-2 w-4 h-4 bg-brass-gradient rounded-full shadow-brass"></div>
             </div>
             
             <button
               onClick={handleTransmute}
               disabled={selectedElements.length < 2 || animating}
-              className={`px-6 py-2 bg-amber-700 hover:bg-amber-600 disabled:bg-amber-900/40 disabled:text-amber-700 rounded-lg shadow-lg transition-colors text-amber-100 font-serif ${animating ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`btn-steampunk text-lg font-display tracking-wide ${animating ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              Transmute
+              {animating ? 'Transmuting...' : 'Transmute Elements'}
             </button>
             
             {selectedElements.length > 0 && (
               <button
                 onClick={() => setSelectedElements([])}
-                className="mt-2 text-amber-400 text-sm hover:text-amber-300"
+                className="mt-3 text-brass-400 text-sm hover:text-brass-300 font-body underline transition-colors"
               >
                 Clear Selection
               </button>
@@ -161,8 +176,11 @@ export const Laboratory: React.FC = () => {
       </div>
 
       {/* Available Elements Section */}
-      <div className="bg-amber-950/60 border border-amber-700/50 rounded-lg p-6 shadow-lg backdrop-blur-sm">
-        <h2 className="text-2xl font-serif font-bold text-amber-200 mb-4">Available Elements</h2>
+      <div className="panel-steampunk p-6">
+        <h2 className="text-2xl font-display font-bold text-steampunk-header mb-6 flex items-center gap-3">
+          <FlaskConical className="text-brass-400" />
+          Laboratory Inventory
+        </h2>
         
         {availableElements.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -170,11 +188,11 @@ export const Laboratory: React.FC = () => {
               <div 
                 key={element} 
                 onClick={() => handleElementClick(element)}
-                className={`cursor-pointer transition-all transform ${
+                className={`element-card cursor-pointer transition-all transform p-4 ${
                   selectedElements.includes(element) 
-                    ? 'bg-amber-700/60 scale-105 border-amber-500' 
-                    : 'bg-amber-900/40 hover:bg-amber-800/50 border-amber-700/30'
-                } border rounded-lg p-4 flex flex-col items-center`}
+                    ? 'selected scale-105 shadow-glow' 
+                    : 'hover:scale-105'
+                }`}
               >
                 <ElementDisplay 
                   element={element} 
@@ -185,9 +203,10 @@ export const Laboratory: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-8">
-            <p className="text-amber-400 italic">
-              No elements available. Start by gathering the basic elements!
+          <div className="text-center py-12">
+            <FlaskConical className="mx-auto text-brass-600/50 mb-4" size={64} />
+            <p className="text-brass-400 italic font-body text-lg">
+              No elements available. Start by gathering the basic elements from the crucibles above!
             </p>
           </div>
         )}
