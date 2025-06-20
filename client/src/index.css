@@ -17,73 +17,85 @@
 }
 
 @layer components {
-  .btn-steampunk {
-    @apply bg-gradient-to-b from-brass-400 to-brass-600 hover:from-brass-300 hover:to-brass-500 
-           text-amber-900 font-semibold py-2 px-4 rounded-lg 
-           border-2 border-brass-700 hover:border-brass-600
-           shadow-brass hover:shadow-steampunk
-           transition-all duration-200 ease-in-out
-           transform hover:scale-105 active:scale-95;
+  .btn-sleek {
+    @apply backdrop-blur-md border border-white/20
+           text-white font-medium py-3 px-6 rounded-xl
+           shadow-glass hover:shadow-neon
+           transition-all duration-300 ease-out
+           transform hover:scale-105
+           relative overflow-hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
   }
   
-  .btn-steampunk:disabled {
-    @apply bg-gradient-to-b from-amber-800 to-amber-900 
-           text-amber-600 cursor-not-allowed
-           border-amber-800 shadow-none
+  .btn-sleek::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 hover:opacity-100
+           transition-opacity duration-300 ease-out;
+    background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 50%, #7dd3fc 100%);
+  }
+  
+  .btn-sleek span {
+    @apply relative z-10;
+  }
+  
+  .btn-sleek:disabled {
+    @apply bg-dark-800/50 text-dark-400 cursor-not-allowed
+           border-dark-700/50 shadow-none
            transform-none hover:scale-100;
   }
   
-  .panel-steampunk {
-    @apply bg-gradient-to-br from-amber-950/80 to-amber-900/60 
-           border-2 border-brass-600/50 rounded-lg 
-           shadow-steampunk backdrop-blur-sm
-           relative overflow-hidden;
+  .panel-glass {
+    @apply backdrop-blur-xl border border-white/10 rounded-2xl 
+           shadow-glass relative overflow-hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
   }
   
-  .panel-steampunk::before {
+  .panel-glass::before {
     content: '';
-    @apply absolute inset-0 bg-gradient-to-br from-brass-400/5 to-transparent pointer-events-none;
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(to bottom right, rgba(255,255,255,0.05) 0%, transparent 100%);
   }
   
-  .text-steampunk-header {
-    @apply font-display text-brass-200 tracking-wide drop-shadow-lg;
+  .text-sleek-header {
+    @apply font-display text-white tracking-wide text-shadow-glow;
   }
   
-  .text-steampunk-body {
-    @apply font-body text-amber-100;
+  .text-sleek-body {
+    @apply font-body text-gray-200;
   }
   
-  .crucible-glow {
-    @apply animate-glow;
+  .neon-glow {
+    @apply animate-pulse shadow-neon;
   }
   
-  .element-card {
-    @apply bg-gradient-to-br from-amber-900/60 to-amber-800/40 
-           border border-brass-600/40 rounded-lg 
-           hover:border-brass-500/60 hover:shadow-glow
-           transition-all duration-300 ease-in-out
-           transform hover:scale-105;
+  .element-card-modern {
+    @apply backdrop-blur-md border border-white/20 rounded-xl 
+           hover:border-neon-400/60 hover:shadow-neon
+           transition-all duration-300 ease-out
+           transform hover:scale-105 hover:-translate-y-1;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
   }
   
-  .element-card.selected {
-    @apply border-brass-400 shadow-glow bg-gradient-to-br from-brass-800/60 to-brass-700/40;
+  .element-card-modern.selected {
+    @apply border-neon-400 shadow-neon;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(56, 189, 248, 0.05) 100%);
   }
   
-  .grimoire-book {
-    @apply bg-gradient-to-br from-amber-950/90 to-amber-900/70
-           border-4 border-brass-700/60 rounded-xl
-           shadow-2xl relative overflow-hidden;
+  .grimoire-modern {
+    @apply backdrop-blur-xl border border-white/20 rounded-3xl
+           shadow-glass relative overflow-hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
   }
   
-  .grimoire-book::before {
+  .grimoire-modern::before {
     content: '';
-    @apply absolute inset-0 bg-gradient-to-br from-brass-400/10 via-transparent to-copper-600/10 pointer-events-none;
+    @apply absolute inset-0 bg-gradient-to-br from-neon-400/5 via-transparent to-electric-400/5 pointer-events-none;
   }
   
-  .grimoire-book::after {
+  .grimoire-modern::after {
     content: '';
-    @apply absolute top-4 left-4 right-4 bottom-4 
-           border border-brass-500/30 rounded-lg pointer-events-none;
+    @apply absolute top-6 left-6 right-6 bottom-6 
+           border border-white/10 rounded-2xl pointer-events-none;
   }
 
   .flask-liquid {
@@ -102,25 +114,33 @@
   }
 }
 
-/* Custom scrollbar for steampunk aesthetic */
-.scrollbar-steampunk::-webkit-scrollbar {
-  width: 8px;
+/* Custom scrollbar for sleek aesthetic */
+.scrollbar-sleek::-webkit-scrollbar {
+  width: 6px;
 }
 
-.scrollbar-steampunk::-webkit-scrollbar-track {
-  @apply bg-amber-950/50 rounded-full;
+.scrollbar-sleek::-webkit-scrollbar-track {
+  @apply bg-dark-900/50 rounded-full;
 }
 
-.scrollbar-steampunk::-webkit-scrollbar-thumb {
-  @apply bg-brass-600/70 rounded-full hover:bg-brass-500/80;
+.scrollbar-sleek::-webkit-scrollbar-thumb {
+  @apply bg-neon-500/70 rounded-full hover:bg-neon-400/80;
 }
 
-/* Parchment texture overlay */
-.parchment-overlay {
+/* Modern tech overlay */
+.tech-overlay {
   background-image: 
-    radial-gradient(circle at 25% 25%, rgba(252, 211, 77, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(146, 64, 14, 0.1) 0%, transparent 50%),
-    linear-gradient(45deg, transparent 49%, rgba(252, 211, 77, 0.03) 50%, transparent 51%);
+    radial-gradient(circle at 25% 25%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 49%, rgba(255, 255, 255, 0.02) 50%, transparent 51%);
+}
+
+/* Glass morphism effect */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* Flask and flower animations */

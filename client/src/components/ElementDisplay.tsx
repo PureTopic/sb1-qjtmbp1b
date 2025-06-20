@@ -19,7 +19,7 @@ export const ElementDisplay: React.FC<ElementDisplayProps> = ({
   
   if (!elementData) {
     return (
-      <div className="text-brass-400 font-body">Unknown Element</div>
+      <div className="text-neon-400 font-body">Unknown Element</div>
     );
   }
   
@@ -28,14 +28,14 @@ export const ElementDisplay: React.FC<ElementDisplayProps> = ({
       <div className={`${small ? 'text-3xl' : 'text-4xl'} mb-2 transition-transform duration-300 hover:scale-110`}>
         {elementData.emoji}
       </div>
-      <div className={`font-display capitalize ${small ? 'text-base' : 'text-lg'} text-brass-200 font-semibold mb-1`}>
+      <div className={`font-display capitalize ${small ? 'text-base' : 'text-lg'} text-white font-semibold mb-1`}>
         {element}
       </div>
-      <div className={`${small ? 'text-sm' : 'text-base'} text-amber-300 font-body font-medium`}>
+      <div className={`${small ? 'text-sm' : 'text-base'} text-neon-300 font-body font-medium`}>
         {formatNumber(amount)}
       </div>
       {selected && (
-        <div className="mt-2 text-xs text-brass-900 bg-brass-gradient px-3 py-1 rounded-full font-body font-semibold shadow-brass">
+        <div className="mt-2 text-xs text-white bg-neon-gradient px-3 py-1 rounded-full font-body font-semibold shadow-neon">
           Selected
         </div>
       )}

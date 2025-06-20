@@ -11,24 +11,53 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
-        // Steampunk color palette
+        // Modern sleek color palette
+        neon: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
+        },
+        electric: {
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
+        },
+        dark: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
+        },
+        // Keep some brass for accent elements
         brass: {
-          200: '#fbbf24', // bright brass
-          300: '#f59e0b', // medium brass
-          400: '#d97706', // warm brass
-          500: '#b45309', // deep brass
-          600: '#92400e', // dark brass
-          700: '#78350f', // darker brass
-          800: '#451a03', // darkest brass
-        },
-        copper: {
-          300: '#ea580c',
-          400: '#dc2626',
-          500: '#b91c1c',
-          600: '#991b1b',
-        },
-        steam: {
-          300: '#e5e7eb',
+          200: '#fbbf24',
+          300: '#f59e0b',
+          400: '#d97706',
+          500: '#b45309',
+          600: '#92400e',
+          700: '#78350f',
+          800: '#451a03',
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -82,12 +111,20 @@ export default {
         },
       },
       backgroundImage: {
-        'steampunk-gradient': 'linear-gradient(135deg, #451a03 0%, #78350f 25%, #92400e 50%, #b45309 75%, #d97706 100%)',
+        'sleek-gradient': 'linear-gradient(135deg, #020617 0%, #0f172a 25%, #1e293b 50%, #334155 75%, #475569 100%)',
+        'neon-gradient': 'linear-gradient(135deg, #0ea5e9 0%, #38bdf8 50%, #7dd3fc 100%)',
+        'electric-gradient': 'linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%)',
+        'glass-panel': 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
       },
       boxShadow: {
-        'brass': '0 4px 6px -1px rgba(217, 119, 6, 0.1), 0 2px 4px -1px rgba(217, 119, 6, 0.06)',
-        'steampunk': '0 10px 15px -3px rgba(217, 119, 6, 0.1), 0 4px 6px -2px rgba(217, 119, 6, 0.05)',
-        'glow': '0 0 20px rgba(252, 211, 77, 0.4)',
+        'neon': '0 0 20px rgba(14, 165, 233, 0.3), 0 0 40px rgba(14, 165, 233, 0.1)',
+        'electric': '0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1)',
+        'glass': '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+        'sleek': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'glow': '0 0 20px rgba(14, 165, 233, 0.4)',
+      },
+      backdropBlur: {
+        'xs': '2px',
       },
       fontFamily: {
         'display': ['Cinzel Decorative', 'serif'],
@@ -110,25 +147,30 @@ export default {
             height: "0",
           },
         },
-        "steam": {
+        "float": {
           "0%, 100%": { transform: "translateY(0) scale(1)", opacity: "0.7" },
-          "50%": { transform: "translateY(-10px) scale(1.1)", opacity: "1" },
+          "50%": { transform: "translateY(-8px) scale(1.05)", opacity: "1" },
         },
-        "glow": {
-          "0%": { boxShadow: "0 0 5px rgba(252, 211, 77, 0.3)" },
-          "100%": { boxShadow: "0 0 20px rgba(252, 211, 77, 0.6)" },
+        "neon-pulse": {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(14, 165, 233, 0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(14, 165, 233, 0.6), 0 0 60px rgba(14, 165, 233, 0.4)" },
         },
-        "bubble": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-5px)" },
+        "electric-flow": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "100% 50%" },
+        },
+        "slide-up": {
+          "0%": { transform: "translateY(20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "steam": "steam 2s ease-in-out infinite",
-        "glow": "glow 2s ease-in-out infinite alternate",
-        "bubble": "bubble 1s ease-in-out infinite",
+        "float": "float 3s ease-in-out infinite",
+        "neon-pulse": "neon-pulse 2s ease-in-out infinite",
+        "electric-flow": "electric-flow 3s linear infinite",
+        "slide-up": "slide-up 0.5s ease-out",
       },
     },
   },

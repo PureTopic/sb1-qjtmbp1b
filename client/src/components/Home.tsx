@@ -11,9 +11,9 @@ export const Home: React.FC = () => {
   const { gameState, actions } = useGame();
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Welcome Section */}
-      <div className="panel-steampunk p-8">
+      <div className="panel-glass p-8">
         <div className="flex flex-col md:flex-row items-start gap-8">
           <div className="w-full md:w-1/3">
             <ProfessorPip />
@@ -21,30 +21,29 @@ export const Home: React.FC = () => {
           
           <div className="w-full md:w-2/3 space-y-6">
             <div>
-              <h1 className="text-4xl font-display font-bold text-steampunk-header tracking-wide mb-3 flex items-center gap-3">
-                <FlaskConical className="text-brass-400 animate-glow" size={40} />
+              <h1 className="text-4xl font-display font-bold text-white tracking-wide mb-3 flex items-center gap-3">
+                <FlaskConical className="text-neon-400 animate-neon-pulse" size={40} />
                 The Soulforge Alchemist
               </h1>
-              <div className="h-1 w-32 bg-brass-gradient rounded-full mb-4"></div>
+              <div className="h-1 w-32 bg-neon-gradient rounded-full mb-4"></div>
             </div>
             
-            <p className="text-steampunk-body text-lg leading-relaxed">
-              Welcome back to your mystical laboratory, master alchemist! Your journey into the arcane science of 
-              transmutation continues. Gather the fundamental elements, discover powerful compounds, and unlock 
-              the deepest secrets of the universe through the ancient art of alchemy.
+            <p className="text-gray-200 text-lg leading-relaxed">
+              Welcome to your quantum transmutation laboratory! Harness the power of molecular manipulation 
+              to discover new compounds, automate processes with AI assistants, and unlock the secrets 
+              of advanced alchemical science.
             </p>
             
             {gameState.tutorialProgress < 3 && (
-              <div className="bg-gradient-to-r from-brass-900/40 to-brass-800/30 border-2 border-brass-600/50 p-6 rounded-xl shadow-steampunk relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-brass-gradient"></div>
+              <div className="glass-morphism p-6 rounded-2xl relative overflow-hidden border border-electric-400/30">
+                <div className="absolute top-0 left-0 w-full h-0.5 bg-electric-gradient"></div>
                 <div className="flex items-start gap-4">
-                  <Sparkles className="text-brass-400 animate-glow flex-shrink-0 mt-1" size={24} />
+                  <Sparkles className="text-electric-400 animate-float flex-shrink-0 mt-1" size={24} />
                   <div>
-                    <h4 className="font-display font-bold text-brass-200 mb-2">Professor Pip's Guidance</h4>
-                    <p className="font-body italic text-brass-100 leading-relaxed">
-                      "Ah, my diligent apprentice! To begin your work today, I suggest you visit the Laboratory and start 
-                      gathering the basic elements. Remember, all great alchemical works begin with the fundamental building blocks 
-                      of creation itself!"
+                    <h4 className="font-display font-bold text-white mb-2">AI Assistant Guidance</h4>
+                    <p className="font-body italic text-gray-300 leading-relaxed">
+                      "System initialized! Begin by accessing the Laboratory interface to collect base elements. 
+                      The quantum transmutation engine awaits your input to unlock advanced molecular compounds."
                     </p>
                   </div>
                 </div>

@@ -231,15 +231,15 @@ export const Laboratory: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Element Generation Section */}
-        <div className="panel-steampunk p-6 md:col-span-2">
-          <h2 className="text-2xl font-display font-bold text-steampunk-header mb-6 flex items-center gap-3">
-            <Sparkles className="text-brass-400 animate-glow" />
-            Elemental Crucibles
+        <div className="panel-glass p-8 md:col-span-2">
+          <h2 className="text-2xl font-display font-bold text-white mb-6 flex items-center gap-3">
+            <Sparkles className="text-electric-400 animate-float" />
+            Quantum Generators
           </h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             {baseElements.map((element) => {
               const elementData = ELEMENTS[element];
               const rate = gameState.generationRates[element];
@@ -249,14 +249,14 @@ export const Laboratory: React.FC = () => {
                 <button 
                   key={element}
                   onClick={() => actions.gatherElement(element)}
-                  className="element-card p-6 flex flex-col items-center justify-center hover:crucible-glow group"
+                  className="element-card-modern p-6 flex flex-col items-center justify-center group"
                 >
                   <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
                     {elementData.emoji}
                   </div>
-                  <div className="font-display capitalize text-xl text-brass-200 mb-2">{element}</div>
-                  <div className="text-lg text-amber-300 font-semibold">{formatNumber(currentAmount)}</div>
-                  <div className="text-sm text-brass-400/80 mt-2 bg-amber-900/30 px-3 py-1 rounded-full">
+                  <div className="font-display capitalize text-xl text-white mb-2">{element}</div>
+                  <div className="text-lg text-neon-300 font-semibold">{formatNumber(currentAmount)}</div>
+                  <div className="text-sm text-gray-400 mt-2 glass-morphism px-3 py-1 rounded-full">
                     +{formatNumber(rate)}/sec
                   </div>
                 </button>
@@ -265,15 +265,15 @@ export const Laboratory: React.FC = () => {
           </div>
         </div>
 
-        {/* Transmutation Crucible Section */}
-        <div className="panel-steampunk p-6">
-          <h2 className="text-2xl font-display font-bold text-steampunk-header mb-6 flex items-center gap-2">
-            <FlaskConical className="text-brass-400" />
-            Transmutation Crucible
+        {/* Quantum Reactor Section */}
+        <div className="panel-glass p-6">
+          <h2 className="text-2xl font-display font-bold text-white mb-6 flex items-center gap-2">
+            <FlaskConical className="text-neon-400" />
+            Quantum Reactor
           </h2>
           
           <div className="flex flex-col items-center">
-            <div className={`relative w-36 h-36 bg-gradient-to-br from-amber-900/60 to-amber-800/40 border-4 border-brass-600/80 rounded-full flex items-center justify-center mb-6 shadow-steampunk ${animating ? 'animate-pulse crucible-glow' : ''}`}>
+            <div className={`relative w-36 h-36 glass-morphism border border-neon-400/50 rounded-full flex items-center justify-center mb-6 ${animating ? 'animate-neon-pulse' : ''}`}>
               {renderCrucibleContent()}
               
               {animating && animationStep !== 'filling' && animationStep !== 'blooming' && (
