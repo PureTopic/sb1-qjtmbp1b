@@ -38,15 +38,15 @@ function App() {
 
   return (
     <GameProvider>
-      <div className="relative min-h-screen bg-sleek-gradient text-white overflow-hidden">
-        {/* Modern tech overlay */}
-        <div className="absolute inset-0 tech-overlay opacity-40 mix-blend-soft-light pointer-events-none z-0"></div>
+      <div className="relative min-h-screen bg-steampunk-background text-white overflow-hidden">
+        {/* Steampunk tech overlay */}
+        <div className="absolute inset-0 tech-overlay opacity-60 mix-blend-soft-light pointer-events-none z-0"></div>
         
         {/* Floating particles */}
-        <div className="absolute top-10 left-10 w-3 h-3 bg-neon-400/30 rounded-full animate-float"></div>
-        <div className="absolute top-20 right-20 w-2 h-2 bg-electric-400/30 rounded-full animate-float" style={{animationDelay: '1s'}}></div>
-        <div className="absolute bottom-32 left-1/4 w-4 h-4 bg-neon-300/20 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
-        <div className="absolute top-1/2 right-1/3 w-2 h-2 bg-electric-300/25 rounded-full animate-float" style={{animationDelay: '3s'}}></div>
+        <div className="absolute top-10 left-10 w-3 h-3 bg-aetheric-gold-400/40 rounded-full animate-float"></div>
+        <div className="absolute top-20 right-20 w-2 h-2 bg-emerald-jade-400/30 rounded-full animate-float" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-32 left-1/4 w-4 h-4 bg-brass-300/30 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 right-1/3 w-2 h-2 bg-aetheric-gold-300/35 rounded-full animate-float" style={{animationDelay: '3s'}}></div>
         
         <div className="relative z-10 flex flex-col h-screen">
           <Navbar activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} />
@@ -69,7 +69,7 @@ function App() {
             pauseOnHover
             theme="dark"
             toastClassName="glass-morphism text-white border-white/20"
-            progressClassName="bg-neon-gradient"
+            progressClassName="bg-brass-gradient"
           />
         </div>
       </div>
