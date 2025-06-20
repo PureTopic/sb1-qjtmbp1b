@@ -375,7 +375,7 @@ export const Laboratory: React.FC = () => {
           </h2>
           
           <div className="flex flex-col items-center">
-            <div className={`relative w-36 h-36 glass-morphism border border-neon-400/50 rounded-full flex items-center justify-center mb-6 ${animating ? 'animate-neon-pulse' : ''}`}>
+            <div className={`relative w-36 h-36 crucible-steampunk flex items-center justify-center mb-6 ${animating ? 'animate-glow' : ''}`}>
               {renderCrucibleContent()}
               
               {animating && animationStep !== 'filling' && animationStep !== 'blooming' && (
@@ -384,12 +384,6 @@ export const Laboratory: React.FC = () => {
                   <div className="absolute w-3/4 h-3/4 bg-brass-300/30 rounded-full animate-ping" style={{animationDelay: '0.5s'}}></div>
                 </div>
               )}
-              
-              {/* Decorative brass elements */}
-              <div className="absolute -top-2 -left-2 w-4 h-4 bg-brass-gradient rounded-full shadow-brass"></div>
-              <div className="absolute -top-2 -right-2 w-4 h-4 bg-brass-gradient rounded-full shadow-brass"></div>
-              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-brass-gradient rounded-full shadow-brass"></div>
-              <div className="absolute -bottom-2 -right-2 w-4 h-4 bg-brass-gradient rounded-full shadow-brass"></div>
             </div>
             
             <button
